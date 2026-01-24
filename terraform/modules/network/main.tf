@@ -4,7 +4,8 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_firewall" "allow_ssh" {
-  name    = "${var.vpc_name}-allow-ssh"
+  count   = var.enable_public_ssh ? 1 : 0
+  name    = "${var.vpc_name}-allow-ssh-public"
   network = google_compute_network.vpc.name
 
   allow {
@@ -14,3 +15,4 @@ resource "google_compute_firewall" "allow_ssh" {
 
   source_ranges = ["0.0.0.0/0"]
 }
+

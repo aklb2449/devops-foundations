@@ -14,3 +14,9 @@ variable "network_name" {
   type = string
 }
 
+variable "enable_public_ip" {
+  description = "Whether to assign a public IP to the VM"
+  type        = bool
+  default     = false
+}
+
