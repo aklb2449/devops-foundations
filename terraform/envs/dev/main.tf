@@ -8,5 +8,5 @@ module "compute" {
   vm_name       = "devops-vm-dev"
   machine_type  = "e2-micro"
   zone          = "asia-south1-a"
-  network_name  = module.network.vpc_name
+  network_name  = module.network.network_name
 }

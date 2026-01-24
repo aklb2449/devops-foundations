@@ -1,3 +1,4 @@
-output "vpc_name" {
-  value = google_compute_network.vpc.name
+output "network_name" {
+  description = "Name of the VPC network"
+  value       = google_compute_network.vpc.name
 }
