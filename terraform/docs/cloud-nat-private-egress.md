@@ -1,4 +1,4 @@
-Cloud NAT – Private VM Outbound Internet Access
+#Cloud NAT – Private VM Outbound Internet Access
 Objective
 
 Enable outbound internet access for private GCP virtual machines without assigning public IP addresses, following production security best practices.
