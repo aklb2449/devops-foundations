@@ -2,34 +2,76 @@
 
 ## Overview
 This project uses environment-based controls to manage network exposure and SSH access.
-Public IP assignment and SSH access are handled independently to follow security best practices.
+Public IP assignment and SSH access are intentionally decoupled to follow cloud security best practices.
 
-## Public IP vs SSH Access
-- Public IP controls whether a VM is reachable from the internet.
-- SSH access is controlled separately using firewall rules.
-- A public IP alone does not allow SSH access.
+---
 
-## Development Environment
+## Public IP vs SSH Access (Important Distinction)
+
+- A **public IP** only makes a VM reachable from the internet.
+- **SSH access** is controlled independently via firewall rules and IAM.
+- Having a public IP does **not** automatically allow SSH access.
+
+This separation prevents accidental exposure of production systems.
+
+---
+
+## Development Environment (dev)
+
 - Public IP: Enabled
-- SSH Access: Enabled (port 22 open from 0.0.0.0/0)
-- Purpose: Easy access for testing and development
+- SSH Access: Enabled  
+  - Firewall rule allows TCP/22 from `0.0.0.0/0`
+- Purpose:
+  - Faster iteration
+  - Easier debugging
+  - Reduced operational friction during development
 
-## Production Environment
+This configuration is intentionally permissive but isolated to dev only.
+
+---
+
+## Production Environment (prod)
+
 - Public IP: Disabled
-- SSH Access: Disabled
-- Access Method: Private networking (IAP or bastion host)
-- Purpose: Secure-by-default production infrastructure
+- SSH Access: Disabled from public internet
+- Access Method:
+  - Google IAP (Identity-Aware Proxy)
+  - Optional bastion host (future enhancement)
+- Purpose:
+  - Minimize attack surface
+  - Enforce identity-based access
+  - Prevent direct internet exposure
 
-## Terraform Implementation
-- `enable_public_ip` controls public IP assignment in the compute module
-- `enable_public_ssh` controls SSH firewall rules in the network module
-- Defaults are secure (false) and overridden only in dev
+Production access is **identity-driven**, not network-driven.
+
+---
+
+## Terraform Controls
+
+| Concern | Terraform Variable | Module |
+|------|-------------------|--------|
+| Public IP | `enable_public_ip` | compute |
+| Public SSH | `enable_public_ssh` | network |
+
+Defaults are secure (`false`) and overridden only in development environments.
+
+---
 
 ## OS Login
-OS Login is enabled on all VMs to centralize authentication and authorization using GCP IAM.
-Network access and identity management are handled independently.
+
+OS Login is enabled on all virtual machines:
+- Centralizes authentication using GCP IAM
+- Eliminates local SSH key sprawl
+- Allows access auditing and role-based control
+
+OS Login handles **who** can log in,  
+Firewall + networking controls handle **from where**.
+
+---
 
 ## Security Rationale
-- Minimizes attack surface in production
-- Prevents accidental public SSH exposure
-- Allows controlled access using approved mechanisms
+
+- Reduced blast radius
+- Clear separation of responsibilities
+- Environment-specific security posture
+- Safe defaults with explicit opt-in for exposure
