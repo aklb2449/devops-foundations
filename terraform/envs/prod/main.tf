@@ -4,6 +4,7 @@ module "network" {
   subnet_name  = "prod-subnet-asia"
   region       = "asia-south1"
   subnet_cidr  = "10.20.1.0/24"
+  enable_cloud_nat = true
 }
 module "compute_green" {
   source            = "../../modules/compute"

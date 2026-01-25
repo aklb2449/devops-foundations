@@ -5,6 +5,7 @@ module "network" {
   subnet_name       = "dev-subnet-asia"
   subnet_cidr       = "10.10.1.0/24"
   enable_public_ssh = true
+  enable_cloud_nat = false
 }
 
 module "compute" {

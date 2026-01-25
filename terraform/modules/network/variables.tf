@@ -23,3 +23,9 @@ variable "enable_public_ssh" {
   type        = bool
   default     = false
 }
+# 🔥 NEW (THIS IS ALL YOU ADD)
+variable "enable_cloud_nat" {
+  description = "Enable Cloud NAT for private subnets (PROD)"
+  type        = bool
+  default     = false
+}
