@@ -11,6 +11,7 @@ resource "google_compute_instance" "vm" {
 
   network_interface {
     network = var.network_name
+    subnetwork = var.subnet_name
    dynamic "access_config" {
     for_each = var.enable_public_ip ? [1] : []
     content {}

@@ -1,4 +1,5 @@
-output "vm_public_ip" {
-  description = "Public IP of dev VM"
-  value       = module.compute.public_ip
+output "vm_private_ip" {
+  description = "Private IP of PROD GREEN VM"
+  value       = module.compute_green.private_ip
 }
+

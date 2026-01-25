@@ -4,3 +4,7 @@ output "public_ip" {
 }
 
 
+output "private_ip" {
+  description = "Private IP of the VM"
+  value       = google_compute_instance.vm.network_interface[0].network_ip
+}

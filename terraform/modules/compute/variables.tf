@@ -19,4 +19,8 @@ variable "enable_public_ip" {
   type        = bool
   default     = false
 }
+variable "subnet_name" {
+  description = "Subnet where the VM will be deployed"
+  type        = string
+}
 
