@@ -23,4 +23,9 @@ variable "subnet_name" {
   description = "Subnet where the VM will be deployed"
   type        = string
 }
+variable "is_bastion" {
+  description = "Whether this VM is a bastion host"
+  type        = bool
+  default     = false
+}
 

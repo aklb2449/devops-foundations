@@ -29,3 +29,20 @@ variable "enable_cloud_nat" {
   type        = bool
   default     = false
 }
+variable "enable_bastion" {
+  description = "Enable bastion subnet and bastion SSH firewall rule"
+  type        = bool
+  default     = false
+}
+
+variable "bastion_subnet_name" {
+  description = "Name of bastion subnet"
+  type        = string
+  default     = null
+}
+
+variable "bastion_subnet_cidr" {
+  description = "CIDR for bastion subnet"
+  type        = string
+  default     = null
+}

@@ -17,7 +17,7 @@ resource "google_compute_instance" "vm" {
     content {}
   }
   }
-
+  tags = var.is_bastion ? ["bastion"] : []
   metadata = {
     enable-oslogin = "TRUE"
   }

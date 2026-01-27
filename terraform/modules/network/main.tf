@@ -60,3 +60,45 @@ resource "google_compute_router_nat" "nat" {
     filter = "ERRORS_ONLY"
   }
 }
+resource "google_compute_subnetwork" "bastion_subnet" {
+  count         = var.enable_bastion ? 1 : 0
+  name          = var.bastion_subnet_name
+  region        = var.region
+  network       = google_compute_network.vpc.name
+  ip_cidr_range = var.bastion_subnet_cidr
+
+  private_ip_google_access = true
+}
+resource "google_compute_firewall" "allow_bastion_ssh" {
+  count   = var.enable_bastion ? 1 : 0
+  name    = "${var.vpc_name}-allow-bastion-ssh"
+  network = google_compute_network.vpc.name
+
+  direction = "INGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = [var.bastion_subnet_cidr]
+  description   = "Allow SSH from Bastion subnet to private VMs"
+}
+# IAP → Bastion VM
+resource "google_compute_firewall" "allow_iap_to_bastion" {
+  count   = var.enable_bastion ? 1 : 0
+  name    = "${var.vpc_name}-allow-iap-to-bastion"
+  network = google_compute_network.vpc.name
+
+  direction = "INGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["35.235.240.0/20"]
+  target_tags   = ["bastion"]
+
+  description = "Allow SSH to Bastion via IAP"
+}
